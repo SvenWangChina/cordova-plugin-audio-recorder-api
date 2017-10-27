@@ -3,6 +3,8 @@ package com.emj365.plugins;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PermissionHelper;
+import android.Manifest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.media.MediaRecorder;
@@ -32,6 +34,11 @@ public class AudioRecorderAPI extends CordovaPlugin {
       seconds = 7;
     }
     if (action.equals("record")) {
+      if (PermissionHelper.hasPermission(this, Manifest.permission.RECORD_AUDIO)) {
+
+      } else {
+          PermissionHelper.requestPermission(this, 0, Manifest.permission.RECORD_AUDIO);
+      }
       outputFile = context.getFilesDir().getAbsoluteFile() + "/"
         + UUID.randomUUID().toString() + ".m4a";
       myRecorder = new MediaRecorder();
